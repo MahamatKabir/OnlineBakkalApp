@@ -1,6 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:gracery/inner_screens/cat_screen.dart';
 import 'package:gracery/inner_screens/on_sale_screen.dart';
 import 'package:gracery/provider/dark_theme_provider.dart';
+import 'package:gracery/providers/cart_provider.dart';
+import 'package:gracery/providers/product_provider.dart';
+import 'package:gracery/providers/viewed_prod_provider.dart';
+import 'package:gracery/providers/wishlist_provider.dart';
+import 'package:gracery/screens/btm_bar.dart';
+import 'package:gracery/screens/home_screen.dart';
 import 'package:gracery/screens/viewed_recently/viewed_recently.dart';
 import 'package:provider/provider.dart';
 import 'consts/theme_data.dart';
@@ -43,7 +50,11 @@ class _MyAppState extends State<MyApp> {
       providers: [
         ChangeNotifierProvider(create: (_) {
           return themeChangeProvider;
-        })
+        }),
+        ChangeNotifierProvider(create: (_) => ProductsProvider()),
+        ChangeNotifierProvider(create: (_) => CartProvider()),
+        ChangeNotifierProvider(create: (_) => WishlistProvider()),
+        ChangeNotifierProvider(create: (_) => ViewedProdProvider()),
       ],
       child:
           Consumer<DarkThemeProvider>(builder: (context, themeProvider, child) {
@@ -51,7 +62,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             theme: Styles.themeData(themeProvider.getDarkTheme, context),
-            home: const LoginScreen(),
+            home: const BottomBarScreen(),
             routes: {
               OnSaleScreen.routeName: (ctx) => const OnSaleScreen(),
               FeedsScreen.routeName: (ctx) => const FeedsScreen(),
@@ -64,6 +75,7 @@ class _MyAppState extends State<MyApp> {
               LoginScreen.routeName: (ctx) => const LoginScreen(),
               ForgetPasswordScreen.routeName: (ctx) =>
                   const ForgetPasswordScreen(),
+              CategoryScreen.routeName: (ctx) => const CategoryScreen(),
             });
       }),
     );

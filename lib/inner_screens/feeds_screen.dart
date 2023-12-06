@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:gracery/consts/contss.dart';
+import 'package:gracery/models/product_model.dart';
+import 'package:gracery/providers/product_provider.dart';
 import 'package:gracery/widget/back_widget.dart';
 import 'package:gracery/widget/feed_items.dart';
 import 'package:gracery/widget/text_widget.dart';
+import 'package:provider/provider.dart';
 import '../services/utils.dart';
 
 class FeedsScreen extends StatefulWidget {
@@ -27,6 +31,8 @@ class _FeedsScreenState extends State<FeedsScreen> {
   Widget build(BuildContext context) {
     final Color color = Utils(context).color;
     Size size = Utils(context).getScreenSize;
+    final productsProviders = Provider.of<ProductsProvider>(context);
+    List<ProductModel> allProducts = productsProviders.getProducts;
     return Scaffold(
       appBar: AppBar(
         leading: const BackWidget(),
@@ -86,8 +92,9 @@ class _FeedsScreenState extends State<FeedsScreen> {
             padding: EdgeInsets.zero,
             // crossAxisSpacing: 10,
             childAspectRatio: size.width / (size.height * 0.65),
-            children: List.generate(10, (index) {
-              return const FeedsWidget();
+            children: List.generate(allProducts.length, (index) {
+              return ChangeNotifierProvider.value(
+                  value: allProducts[index], child: const FeedsWidget());
             }),
           ),
         ]),

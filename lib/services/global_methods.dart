@@ -45,6 +45,9 @@ class GlobalMethods {
               TextButton(
                 onPressed: () {
                   fct();
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context);
+                  }
                 },
                 child: TextWidget(
                   color: Colors.red,

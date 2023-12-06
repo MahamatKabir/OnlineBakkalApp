@@ -1,23 +1,29 @@
+import 'package:flutter/cupertino.dart';
 import 'package:gracery/models/product_model.dart';
 
-class Constss {
-  static final List<String> offerImages = [
-    'assets/images/offres/Offer1.jpg',
-    'assets/images/offres/Offer2.jpg',
-    'assets/images/offres/Offer3.jpg',
-    'assets/images/offres/Offer4.jpg'
-  ];
-  static List<String> authImagesPaths = [
-    'assets/images/landing/buy-on-laptop.jpg',
-    'assets/images/landing/buy-through.png',
-    'assets/images/landing/buyfood.jpg',
-    'assets/images/landing/grocery-cart.jpg',
-    'assets/images/landing/grocery-cart.jpg',
-    'assets/images/landing/store.jpg',
-    'assets/images/landing/vergtablebg.jpg',
-  ];
+class ProductsProvider with ChangeNotifier {
+  List<ProductModel> get getProducts {
+    return _productsList;
+  }
 
-  static final List<ProductModel> productsList = [
+  List<ProductModel> get getOnSaleProduct {
+    return _productsList.where((element) => element.isOnSale).toList();
+  }
+
+  ProductModel findProdById(String productId) {
+    return _productsList.firstWhere((element) => element.id == productId);
+  }
+
+  List<ProductModel> findByCategory(String categoryName) {
+    List<ProductModel> _categoryList = _productsList
+        .where((element) => element.productCategoryName
+            .toLowerCase()
+            .contains(categoryName.toLowerCase()))
+        .toList();
+    return _categoryList;
+  }
+
+  static final List<ProductModel> _productsList = [
     ProductModel(
       id: 'Apricot',
       title: 'Apricot',
@@ -35,7 +41,7 @@ class Constss {
       salePrice: 0.5,
       imageUrl: 'https://i.ibb.co/9VKXw5L/Avocat.png',
       productCategoryName: 'Fruits',
-      isOnSale: false,
+      isOnSale: true,
       isPiece: true,
     ),
     ProductModel(
@@ -298,7 +304,7 @@ class Constss {
       salePrice: 6.5,
       imageUrl: 'https://i.ibb.co/c8QtSr2/almand.jpg',
       productCategoryName: 'Nuts',
-      isOnSale: false,
+      isOnSale: true,
       isPiece: false,
     ),
   ];

@@ -50,6 +50,12 @@ flutter:
      - assets/images/offres/Offer2.jpg
      - assets/images/offres/Offer3.jpg
      - assets/images/offres/Offer4.jpg
+     - assets/images/cat/fruits.png
+     - assets/images/cat/veg.png
+     - assets/images/cat/Spinach.png
+     - assets/images/cat/nuts.png
+     - assets/images/cat/spices.png
+     - assets/images/cat/grains.png
       
      
      

@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:gracery/models/product_model.dart';
+import 'package:gracery/providers/product_provider.dart';
 import 'package:gracery/widget/back_widget.dart';
+import 'package:gracery/widget/empty_products_widget.dart';
 import 'package:gracery/widget/on_sale_widget.dart';
 import 'package:gracery/widget/text_widget.dart';
+import 'package:provider/provider.dart';
 import '../services/utils.dart';
 
 class OnSaleScreen extends StatelessWidget {
@@ -13,6 +17,8 @@ class OnSaleScreen extends StatelessWidget {
     bool _isEmpty = false;
     final Color color = Utils(context).color;
     Size size = Utils(context).getScreenSize;
+    final productsProviders = Provider.of<ProductsProvider>(context);
+    List<ProductModel> productsOnSale = productsProviders.getOnSaleProduct;
     return Scaffold(
       appBar: AppBar(
         leading: const BackWidget(),
@@ -25,37 +31,16 @@ class OnSaleScreen extends StatelessWidget {
           isTitle: true,
         ),
       ),
-      body: _isEmpty
-          ? Center(
-              child: Padding(
-                padding: const EdgeInsets.all(8.0),
-                child: Column(
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.all(18.0),
-                      child: Image.asset(
-                        'assets/images/box.png',
-                      ),
-                    ),
-                    Text(
-                      'No products on sale yet!,\nStay tuned',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(
-                          color: color,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w700),
-                    ),
-                  ],
-                ),
-              ),
-            )
+      body: productsOnSale.isEmpty
+          ? const EmptyProdWidget(text: 'No products belong to this category')
           : GridView.count(
               crossAxisCount: 2,
               padding: EdgeInsets.zero,
               // crossAxisSpacing: 10,
               childAspectRatio: size.width / (size.height * 0.50),
-              children: List.generate(16, (index) {
-                return const OnSaleWidget();
+              children: List.generate(productsOnSale.length, (index) {
+                return ChangeNotifierProvider.value(
+                    value: productsOnSale[index], child: const OnSaleWidget());
               }),
             ),
     );

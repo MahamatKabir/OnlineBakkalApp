@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:gracery/inner_screens/product_details.dart';
+import 'package:gracery/providers/cart_provider.dart';
 import 'package:gracery/screens/cart/cart_widget.dart';
 import 'package:gracery/services/global_methods.dart';
 import 'package:gracery/widget/text_widget.dart';
+import 'package:provider/provider.dart';
 
 import '../../services/utils.dart';
 
@@ -14,12 +15,15 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final Color color = Utils(context).color;
     Size size = Utils(context).getScreenSize;
+    final cartProvider = Provider.of<CartProvider>(context);
+    final cartItemsList =
+        cartProvider.getCartItems.values.toList().reversed.toList();
     return Scaffold(
       appBar: AppBar(
           elevation: 0,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           title: TextWidget(
-            text: 'Cart (2)',
+            text: 'Cart (${cartItemsList.length})',
             color: color,
             isTitle: true,
             textSize: 22,
@@ -30,7 +34,9 @@ class CartScreen extends StatelessWidget {
                 GlobalMethods.warningDialog(
                     title: 'Empty your cart?',
                     subtitle: 'Are you sure?',
-                    fct: () {},
+                    fct: () {
+                      cartProvider.clearCart();
+                    },
                     context: context);
               },
               icon: Icon(
@@ -44,9 +50,13 @@ class CartScreen extends StatelessWidget {
           _checkout(ctx: context),
           Expanded(
             child: ListView.builder(
-              itemCount: 10,
+              itemCount: cartItemsList.length,
               itemBuilder: (ctx, index) {
-                return CartWidget();
+                return ChangeNotifierProvider.value(
+                    value: cartItemsList[index],
+                    child: CartWidget(
+                      q: cartItemsList[index].quantity,
+                    ));
               },
             ),
           ),

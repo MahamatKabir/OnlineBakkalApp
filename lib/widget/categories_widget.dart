@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gracery/inner_screens/cat_screen.dart';
 import 'package:gracery/widget/text_widget.dart';
 import 'package:provider/provider.dart';
 
@@ -21,10 +22,11 @@ class CategoriesWidget extends StatelessWidget {
     final Color color = themeState.getDarkTheme ? Colors.white : Colors.black;
     return InkWell(
       onTap: () {
-        print('Category pressed');
+        Navigator.pushNamed(context, CategoryScreen.routeName,
+            arguments: catText);
       },
       child: Container(
-        // height: _screenWidth * 0.6,
+        height: _screenWidth * 0.6,
         decoration: BoxDecoration(
           color: passedColor.withOpacity(0.1),
           borderRadius: BorderRadius.circular(16),
