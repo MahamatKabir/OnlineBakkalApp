@@ -57,14 +57,13 @@ class EmptyScreen extends StatelessWidget {
               ),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  elevation: 0,
+                  elevation: 0, backgroundColor: Theme.of(context).colorScheme.secondary,
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(8.0),
                     side: BorderSide(
                       color: color,
                     ),
                   ),
-                  primary: Theme.of(context).colorScheme.secondary,
                   // onPrimary: color,
                   padding:
                       const EdgeInsets.symmetric(horizontal: 40, vertical: 20),

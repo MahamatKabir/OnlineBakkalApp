@@ -45,7 +45,7 @@ class _CartWidgetState extends State<CartWidget> {
         ? getCurrProduct.salePrice
         : getCurrProduct.price;
     final cartProvider = Provider.of<CartProvider>(context);
-    bool? _isInWishlist =
+    bool? isInWishlist =
         wishlistProvider.getWishlistItems.containsKey(getCurrProduct.id);
     return GestureDetector(
       onTap: () {
@@ -176,7 +176,7 @@ class _CartWidgetState extends State<CartWidget> {
                           ),
                           HeartBTN(
                             productId: getCurrProduct.id,
-                            isInWishlist: _isInWishlist,
+                            isInWishlist: isInWishlist,
                           ),
                           TextWidget(
                             text: '\$${usedPrice.toStringAsFixed(2)}',

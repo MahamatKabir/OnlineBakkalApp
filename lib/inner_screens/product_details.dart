@@ -1,12 +1,15 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:gracery/consts/firebase_consts.dart';
 import 'package:gracery/providers/cart_provider.dart';
 import 'package:gracery/providers/product_provider.dart';
 import 'package:gracery/providers/viewed_prod_provider.dart';
 import 'package:gracery/providers/wishlist_provider.dart';
+import 'package:gracery/services/global_methods.dart';
 import 'package:gracery/widget/heart_btn.dart';
 import 'package:gracery/widget/text_widget.dart';
 import 'package:provider/provider.dart';
@@ -44,8 +47,8 @@ class _ProductDetailsState extends State<ProductDetails> {
         ? getCurrProduct.salePrice
         : getCurrProduct.price;
     double totalPrice = usedPrice * int.parse(_quantityTextController.text);
-    bool? _isInCart = cartProvider.getCartItems.containsKey(getCurrProduct.id);
-    bool? _isInWishlist =
+    bool? isInCart = cartProvider.getCartItems.containsKey(getCurrProduct.id);
+    bool? isInWishlist =
         wishlistProvider.getWishlistItems.containsKey(getCurrProduct.id);
     final viewedProdProvider = Provider.of<ViewedProdProvider>(context);
     return PopScope(
@@ -106,7 +109,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                         ),
                         HeartBTN(
                           productId: getCurrProduct.id,
-                          isInWishlist: _isInWishlist,
+                          isInWishlist: isInWishlist,
                         ),
                       ],
                     ),
@@ -284,7 +287,15 @@ class _ProductDetailsState extends State<ProductDetails> {
                             borderRadius: BorderRadius.circular(10),
                             child: InkWell(
                               onTap: () {
-                                if (_isInCart) {
+                                if (isInCart) {
+                                  return;
+                                }
+                                final User? user = authInstance.currentUser;
+                                if (user == null) {
+                                  GlobalMethods.errorDialog(
+                                      subtitle:
+                                          'No user found , Pleae login first',
+                                      context: context);
                                   return;
                                 }
                                 cartProvider.addProductsToCart(
@@ -297,7 +308,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   padding: const EdgeInsets.all(12.0),
                                   child: TextWidget(
                                       text:
-                                          _isInCart ? 'in Cart' : 'Add to cart',
+                                          isInCart ? 'in Cart' : 'Add to cart',
                                       color: Colors.white,
                                       textSize: 18)),
                             ),

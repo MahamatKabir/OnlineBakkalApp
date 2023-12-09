@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:gracery/consts/contss.dart';
 import 'package:gracery/models/product_model.dart';
 import 'package:gracery/providers/product_provider.dart';
 import 'package:gracery/widget/back_widget.dart';
@@ -18,11 +16,11 @@ class FeedsScreen extends StatefulWidget {
 }
 
 class _FeedsScreenState extends State<FeedsScreen> {
-  final TextEditingController? _searchTextController = TextEditingController();
+  final TextEditingController _searchTextController = TextEditingController();
   final FocusNode _searchTextFocusNode = FocusNode();
   @override
   void dispose() {
-    _searchTextController!.dispose();
+    _searchTextController.dispose();
     _searchTextFocusNode.dispose();
     super.dispose();
   }
@@ -73,7 +71,7 @@ class _FeedsScreenState extends State<FeedsScreen> {
                   prefixIcon: const Icon(Icons.search),
                   suffix: IconButton(
                     onPressed: () {
-                      _searchTextController!.clear();
+                      _searchTextController.clear();
                       _searchTextFocusNode.unfocus();
                     },
                     icon: Icon(

@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:gracery/inner_screens/cat_screen.dart';
 import 'package:gracery/inner_screens/on_sale_screen.dart';
@@ -6,8 +7,6 @@ import 'package:gracery/providers/cart_provider.dart';
 import 'package:gracery/providers/product_provider.dart';
 import 'package:gracery/providers/viewed_prod_provider.dart';
 import 'package:gracery/providers/wishlist_provider.dart';
-import 'package:gracery/screens/btm_bar.dart';
-import 'package:gracery/screens/home_screen.dart';
 import 'package:gracery/screens/viewed_recently/viewed_recently.dart';
 import 'package:provider/provider.dart';
 import 'consts/theme_data.dart';
@@ -19,7 +18,9 @@ import 'screens/auth/register.dart';
 import 'screens/orders/orders_screen.dart';
 import 'screens/wishlist/wishlist_screen.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -46,6 +47,26 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
+    //return FutureBuilder(
+    // future: Firebase.initializeApp(),
+    // builder: (context, snapshot) {
+    // if (snapshot.connectionState == ConnectionState.waiting) {
+    // return const MaterialApp(
+    // home: Scaffold(
+    // body: Center(
+    //  child: CircularProgressIndicator(),
+    //),
+    // ),
+    // );
+    //} else if (snapshot.hasError) {
+    //const MaterialApp(
+    //  home: Scaffold(
+    //   body: Center(
+    // child: CircularProgressIndicator(),
+    //  ),
+    // ),
+    // );
+    // }
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) {
@@ -62,7 +83,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             theme: Styles.themeData(themeProvider.getDarkTheme, context),
-            home: const BottomBarScreen(),
+            home: const LoginScreen(),
             routes: {
               OnSaleScreen.routeName: (ctx) => const OnSaleScreen(),
               FeedsScreen.routeName: (ctx) => const FeedsScreen(),
@@ -79,5 +100,6 @@ class _MyAppState extends State<MyApp> {
             });
       }),
     );
+    // });
   }
 }

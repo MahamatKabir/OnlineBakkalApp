@@ -1,6 +1,8 @@
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:gracery/consts/firebase_consts.dart';
 import 'package:gracery/inner_screens/product_details.dart';
 import 'package:gracery/models/product_model.dart';
 import 'package:gracery/providers/cart_provider.dart';
@@ -41,9 +43,9 @@ class _FeedsWidgetState extends State<FeedsWidget> {
     Size size = Utils(context).getScreenSize;
     final productModel = Provider.of<ProductModel>(context);
     final cartProvider = Provider.of<CartProvider>(context);
-    bool? _isInCart = cartProvider.getCartItems.containsKey(productModel.id);
+    bool? isInCart = cartProvider.getCartItems.containsKey(productModel.id);
     final wishlistProvider = Provider.of<WishlistProvider>(context);
-    bool? _isInWishlist =
+    bool? isInWishlist =
         wishlistProvider.getWishlistItems.containsKey(productModel.id);
     return Padding(
       padding: const EdgeInsets.all(8.0),
@@ -84,7 +86,7 @@ class _FeedsWidgetState extends State<FeedsWidget> {
                       flex: 1,
                       child: HeartBTN(
                         productId: productModel.id,
-                        isInWishlist: _isInWishlist,
+                        isInWishlist: isInWishlist,
                       )),
                 ],
               ),
@@ -160,7 +162,14 @@ class _FeedsWidgetState extends State<FeedsWidget> {
               //width: double.infinity,
               child: TextButton(
                 onPressed: () {
-                  if (_isInCart) {
+                  if (isInCart) {
+                    return;
+                  }
+                  final User? user = authInstance.currentUser;
+                  if (user == null) {
+                    GlobalMethods.errorDialog(
+                        subtitle: 'No user found , Pleae login first',
+                        context: context);
                     return;
                   }
                   cartProvider.addProductsToCart(
@@ -180,7 +189,7 @@ class _FeedsWidgetState extends State<FeedsWidget> {
                       ),
                     )),
                 child: TextWidget(
-                  text: _isInCart ? 'in Cart' : 'Add to cart',
+                  text: isInCart ? 'in Cart' : 'Add to cart',
                   maxLines: 1,
                   color: color,
                   textSize: 20,

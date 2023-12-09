@@ -15,12 +15,12 @@ class ProductsProvider with ChangeNotifier {
   }
 
   List<ProductModel> findByCategory(String categoryName) {
-    List<ProductModel> _categoryList = _productsList
+    List<ProductModel> categoryList = _productsList
         .where((element) => element.productCategoryName
             .toLowerCase()
             .contains(categoryName.toLowerCase()))
         .toList();
-    return _categoryList;
+    return categoryList;
   }
 
   static final List<ProductModel> _productsList = [

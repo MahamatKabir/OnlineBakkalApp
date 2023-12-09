@@ -74,7 +74,7 @@ class _ViewedRecentlyScreenState extends State<ViewedRecentlyScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 2, vertical: 6),
                 child: ChangeNotifierProvider.value(
                     value: viewedProdItemsList[index],
-                    child: ViewedRecentlyWidget()),
+                    child: const ViewedRecentlyWidget()),
               );
             }),
       );

@@ -23,7 +23,7 @@ class WishlistWidget extends StatelessWidget {
     double usedPrice = getCurrProduct.isOnSale
         ? getCurrProduct.salePrice
         : getCurrProduct.price;
-    bool? _isInWishlist =
+    bool? isInWishlist =
         wishlistProvider.getWishlistItems.containsKey(getCurrProduct.id);
     final Color color = Utils(context).color;
     Size size = Utils(context).getScreenSize;
@@ -73,7 +73,7 @@ class WishlistWidget extends StatelessWidget {
                           ),
                           HeartBTN(
                             productId: getCurrProduct.id,
-                            isInWishlist: _isInWishlist,
+                            isInWishlist: isInWishlist,
                           )
                         ],
                       ),

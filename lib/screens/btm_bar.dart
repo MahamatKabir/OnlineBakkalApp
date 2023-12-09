@@ -1,13 +1,10 @@
-import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:gracery/screens/categories.dart';
 import 'package:gracery/screens/home_screen.dart';
 import 'package:gracery/screens/user.dart';
-import 'package:gracery/widget/text_widget.dart';
 import 'package:provider/provider.dart';
 import '../provider/dark_theme_provider.dart';
-import '../providers/cart_provider.dart';
 import 'cart/cart_screen.dart';
 
 class BottomBarScreen extends StatefulWidget {
@@ -47,20 +44,20 @@ class _BottomBarScreenState extends State<BottomBarScreen> {
   Widget build(BuildContext context) {
     final themeState = Provider.of<DarkThemeProvider>(context);
 
-    bool _isDark = themeState.getDarkTheme;
+    bool isDark = themeState.getDarkTheme;
     return Scaffold(
       // appBar: AppBar(
       //   title: Text( _pages[_selectedIndex]['title']),
       // ),
       body: _pages[_selectedIndex]['page'],
       bottomNavigationBar: BottomNavigationBar(
-        backgroundColor: _isDark ? Theme.of(context).cardColor : Colors.white,
+        backgroundColor: isDark ? Theme.of(context).cardColor : Colors.white,
         type: BottomNavigationBarType.fixed,
         showSelectedLabels: false,
         showUnselectedLabels: false,
         currentIndex: _selectedIndex,
-        unselectedItemColor: _isDark ? Colors.white10 : Colors.black12,
-        selectedItemColor: _isDark ? Colors.lightBlue.shade200 : Colors.black87,
+        unselectedItemColor: isDark ? Colors.white10 : Colors.black12,
+        selectedItemColor: isDark ? Colors.lightBlue.shade200 : Colors.black87,
         onTap: _selectedPage,
         items: <BottomNavigationBarItem>[
           BottomNavigationBarItem(

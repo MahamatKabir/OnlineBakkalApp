@@ -1,7 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:gracery/inner_screens/product_details.dart';
+import 'package:gracery/consts/firebase_consts.dart';
+import 'package:gracery/screens/auth/login.dart';
 import 'package:gracery/screens/orders/orders_screen.dart';
 import 'package:gracery/screens/viewed_recently/viewed_recently.dart';
 import 'package:gracery/screens/wishlist/wishlist_screen.dart';
@@ -27,6 +29,7 @@ class _UserScreenState extends State<UserScreen> {
     super.dispose();
   }
 
+  final User? user = authInstance.currentUser;
   @override
   Widget build(BuildContext context) {
     final themeState = Provider.of<DarkThemeProvider>(context);
@@ -144,10 +147,23 @@ class _UserScreenState extends State<UserScreen> {
                 value: themeState.getDarkTheme,
               ),
               _listTiles(
-                title: 'Logout',
-                icon: IconlyLight.logout,
+                title: user == null ? 'Login' : 'Logout',
+                icon: user == null ? IconlyLight.login : IconlyLight.logout,
                 onPressed: () {
-                  _showLogoutDialog();
+                  if (user == null) {
+                    Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => const LoginScreen()));
+                    return;
+                  }
+                  GlobalMethods.warningDialog(
+                      title: 'sign Out',
+                      subtitle: 'Do you wanna sin out',
+                      fct: () async {
+                        await authInstance.signOut();
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const LoginScreen()));
+                      },
+                      context: context);
                 },
                 color: color,
               ),
@@ -178,7 +194,7 @@ class _UserScreenState extends State<UserScreen> {
                   const Text('Sign Out')
                 ],
               ),
-              content: Text('Do you wanna Sign Out?'),
+              content: const Text('Do you wanna Sign Out?'),
               actions: [
                 TextButton(
                     onPressed: () {
@@ -235,7 +251,7 @@ class _UserScreenState extends State<UserScreen> {
         // isTitle: true,
       ),
       subtitle: TextWidget(
-        text: subtitle == null ? "" : subtitle,
+        text: subtitle ?? "",
         color: color,
         textSize: 18,
       ),

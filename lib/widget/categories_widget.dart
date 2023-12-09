@@ -18,7 +18,7 @@ class CategoriesWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     // Size size = MediaQuery.of(context).size;
     final themeState = Provider.of<DarkThemeProvider>(context);
-    double _screenWidth = MediaQuery.of(context).size.width;
+    double screenWidth = MediaQuery.of(context).size.width;
     final Color color = themeState.getDarkTheme ? Colors.white : Colors.black;
     return InkWell(
       onTap: () {
@@ -26,7 +26,7 @@ class CategoriesWidget extends StatelessWidget {
             arguments: catText);
       },
       child: Container(
-        height: _screenWidth * 0.6,
+        height: screenWidth * 0.6,
         decoration: BoxDecoration(
           color: passedColor.withOpacity(0.1),
           borderRadius: BorderRadius.circular(16),
@@ -38,8 +38,8 @@ class CategoriesWidget extends StatelessWidget {
         child: Column(children: [
           // Container for the image
           Container(
-            height: _screenWidth * 0.3,
-            width: _screenWidth * 0.3,
+            height: screenWidth * 0.3,
+            width: screenWidth * 0.3,
             decoration: BoxDecoration(
               image: DecorationImage(
                   image: AssetImage(

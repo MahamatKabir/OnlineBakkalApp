@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:gracery/models/product_model.dart';
 import 'package:gracery/providers/product_provider.dart';
 import 'package:gracery/widget/back_widget.dart';
@@ -14,7 +13,7 @@ class OnSaleScreen extends StatelessWidget {
   const OnSaleScreen({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
-    bool _isEmpty = false;
+    bool isEmpty = false;
     final Color color = Utils(context).color;
     Size size = Utils(context).getScreenSize;
     final productsProviders = Provider.of<ProductsProvider>(context);

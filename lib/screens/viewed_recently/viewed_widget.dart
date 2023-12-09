@@ -1,7 +1,8 @@
-import 'package:flutter/cupertino.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:gracery/consts/firebase_consts.dart';
 import 'package:gracery/inner_screens/product_details.dart';
 import 'package:gracery/models/viewed_model.dart';
 import 'package:gracery/providers/product_provider.dart';
@@ -31,15 +32,15 @@ class _ViewedRecentlyWidgetState extends State<ViewedRecentlyWidget> {
         ? getCurrProduct.salePrice
         : getCurrProduct.price;
     final cartProvider = Provider.of<CartProvider>(context);
-    bool? _isInCart = cartProvider.getCartItems.containsKey(getCurrProduct.id);
+    bool? isInCart = cartProvider.getCartItems.containsKey(getCurrProduct.id);
     Color color = Utils(context).color;
     Size size = Utils(context).getScreenSize;
     return Padding(
       padding: const EdgeInsets.all(8.0),
       child: GestureDetector(
         onTap: () {
-          GlobalMethods.navigateTo(
-              ctx: context, routeName: ProductDetails.routeName);
+          // GlobalMethods.navigateTo(
+          //   ctx: context, routeName: ProductDetails.routeName);
         },
         child: Row(
           crossAxisAlignment: CrossAxisAlignment.center,
@@ -81,9 +82,16 @@ class _ViewedRecentlyWidgetState extends State<ViewedRecentlyWidget> {
                 color: Colors.green,
                 child: InkWell(
                     borderRadius: BorderRadius.circular(12),
-                    onTap: _isInCart
+                    onTap: isInCart
                         ? null
                         : () {
+                            final User? user = authInstance.currentUser;
+                            if (user == null) {
+                              GlobalMethods.errorDialog(
+                                  subtitle: 'No user found , Pleae login first',
+                                  context: context);
+                              return;
+                            }
                             cartProvider.addProductsToCart(
                               productId: getCurrProduct.id,
                               quantity: 1,
@@ -92,7 +100,7 @@ class _ViewedRecentlyWidgetState extends State<ViewedRecentlyWidget> {
                     child: Padding(
                       padding: const EdgeInsets.all(8.0),
                       child: Icon(
-                        _isInCart ? Icons.check : IconlyBold.plus,
+                        isInCart ? Icons.check : IconlyBold.plus,
                         color: Colors.white,
                         size: 20,
                       ),

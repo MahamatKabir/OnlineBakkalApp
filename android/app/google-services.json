@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "515831734983",
+    "project_id": "gracery-app",
+    "storage_bucket": "gracery-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:515831734983:android:fae6f85ca3974e1cf554e2",
+        "android_client_info": {
+          "package_name": "com.example.gracery"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBkdD7NEHzOvdArkh8ae4MuZrTWd9Of0-0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

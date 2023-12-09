@@ -1,7 +1,6 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
-import 'package:gracery/consts/contss.dart';
 import 'package:gracery/inner_screens/feeds_screen.dart';
 import 'package:gracery/inner_screens/on_sale_screen.dart';
 import 'package:gracery/models/product_model.dart';
