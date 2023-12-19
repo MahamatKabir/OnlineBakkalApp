@@ -161,21 +161,28 @@ class _FeedsWidgetState extends State<FeedsWidget> {
             SizedBox(
               //width: double.infinity,
               child: TextButton(
-                onPressed: () {
-                  if (isInCart) {
-                    return;
-                  }
-                  final User? user = authInstance.currentUser;
-                  if (user == null) {
-                    GlobalMethods.errorDialog(
-                        subtitle: 'No user found , Pleae login first',
-                        context: context);
-                    return;
-                  }
-                  cartProvider.addProductsToCart(
-                      productId: productModel.id,
-                      quantity: int.parse(_quantityTextController.text));
-                },
+                onPressed: isInCart
+                    ? null
+                    : () async {
+                        //if (isInCart) {
+                        //return;
+                        //}
+                        final User? user = authInstance.currentUser;
+                        if (user == null) {
+                          GlobalMethods.errorDialog(
+                              subtitle: 'No user found , Pleae login first',
+                              context: context);
+                          return;
+                        }
+                        await GlobalMethods.addToCart(
+                            productId: productModel.id,
+                            quantity: int.parse(_quantityTextController.text),
+                            context: context);
+                        await cartProvider.fetchCart();
+                        // cartProvider.addProductsToCart(
+                        //     productId: productModel.id,
+                        //     quantity: int.parse(_quantityTextController.text));
+                      },
                 style: ButtonStyle(
                     backgroundColor:
                         MaterialStateProperty.all(Theme.of(context).cardColor),

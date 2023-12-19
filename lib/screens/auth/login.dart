@@ -2,6 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:gracery/fetch_screen.dart';
 import 'package:gracery/screens/auth/forget_pass.dart';
 import 'package:gracery/screens/auth/register.dart';
 import 'package:gracery/screens/btm_bar.dart';
@@ -39,10 +40,11 @@ class _LoginScreenState extends State<LoginScreen> {
   void _submitFormOnLogin() async {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
-    setState(() {
-      _isLoading = true;
-    });
+
     if (isValid) {
+      setState(() {
+        _isLoading = true;
+      });
       _formKey.currentState!.save();
 
       try {
@@ -50,7 +52,7 @@ class _LoginScreenState extends State<LoginScreen> {
             email: _emailTextController.text.toLowerCase().trim(),
             password: _passTextController.text.trim());
         Navigator.of(context).pushReplacement(MaterialPageRoute(
-          builder: (context) => const BottomBarScreen(),
+          builder: (context) => const FetchScreen(),
         ));
         print('Succefully logged in');
       } on FirebaseException catch (error) {

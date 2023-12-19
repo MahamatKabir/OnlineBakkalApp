@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gracery/models/product_model.dart';
 import 'package:gracery/providers/product_provider.dart';
 import 'package:gracery/widget/back_widget.dart';
+import 'package:gracery/widget/empty_products_widget.dart';
 import 'package:gracery/widget/feed_items.dart';
 import 'package:gracery/widget/text_widget.dart';
 import 'package:provider/provider.dart';
@@ -16,21 +17,28 @@ class FeedsScreen extends StatefulWidget {
 }
 
 class _FeedsScreenState extends State<FeedsScreen> {
-  final TextEditingController _searchTextController = TextEditingController();
+  final TextEditingController? _searchTextController = TextEditingController();
   final FocusNode _searchTextFocusNode = FocusNode();
   @override
   void dispose() {
-    _searchTextController.dispose();
+    _searchTextController!.dispose();
     _searchTextFocusNode.dispose();
     super.dispose();
   }
 
+  // @override
+  // void initState() {
+  //   final productsProvider = Provider.of<ProductsProvider>(context, listen: false);
+  //   productsProvider.fetchProducts();
+  //   super.initState();
+  // }
+  List<ProductModel> listProdcutSearch = [];
   @override
   Widget build(BuildContext context) {
     final Color color = Utils(context).color;
     Size size = Utils(context).getScreenSize;
-    final productsProviders = Provider.of<ProductsProvider>(context);
-    List<ProductModel> allProducts = productsProviders.getProducts;
+    final productsProvider = Provider.of<ProductsProvider>(context);
+    List<ProductModel> allProducts = productsProvider.getProducts;
     return Scaffold(
       appBar: AppBar(
         leading: const BackWidget(),
@@ -54,7 +62,9 @@ class _FeedsScreenState extends State<FeedsScreen> {
                 focusNode: _searchTextFocusNode,
                 controller: _searchTextController,
                 onChanged: (valuee) {
-                  setState(() {});
+                  setState(() {
+                    listProdcutSearch = productsProvider.searchQuery(valuee);
+                  });
                 },
                 decoration: InputDecoration(
                   focusedBorder: OutlineInputBorder(
@@ -71,7 +81,7 @@ class _FeedsScreenState extends State<FeedsScreen> {
                   prefixIcon: const Icon(Icons.search),
                   suffix: IconButton(
                     onPressed: () {
-                      _searchTextController.clear();
+                      _searchTextController!.clear();
                       _searchTextFocusNode.unfocus();
                     },
                     icon: Icon(
@@ -83,18 +93,28 @@ class _FeedsScreenState extends State<FeedsScreen> {
               ),
             ),
           ),
-          GridView.count(
-            shrinkWrap: true,
-            physics: const NeverScrollableScrollPhysics(),
-            crossAxisCount: 2,
-            padding: EdgeInsets.zero,
-            // crossAxisSpacing: 10,
-            childAspectRatio: size.width / (size.height * 0.65),
-            children: List.generate(allProducts.length, (index) {
-              return ChangeNotifierProvider.value(
-                  value: allProducts[index], child: const FeedsWidget());
-            }),
-          ),
+          _searchTextController!.text.isNotEmpty && listProdcutSearch.isEmpty
+              ? const EmptyProdWidget(
+                  text: 'No products found, please try another keyword')
+              : GridView.count(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  crossAxisCount: 2,
+                  padding: EdgeInsets.zero,
+                  // crossAxisSpacing: 10,
+                  childAspectRatio: size.width / (size.height * 0.59),
+                  children: List.generate(
+                      _searchTextController.text.isNotEmpty
+                          ? listProdcutSearch.length
+                          : allProducts.length, (index) {
+                    return ChangeNotifierProvider.value(
+                      value: _searchTextController.text.isNotEmpty
+                          ? listProdcutSearch[index]
+                          : allProducts[index],
+                      child: const FeedsWidget(),
+                    );
+                  }),
+                ),
         ]),
       ),
     );

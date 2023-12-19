@@ -4,12 +4,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:gracery/inner_screens/product_details.dart';
 import 'package:gracery/models/cart_model.dart';
-import 'package:gracery/providers/cart_provider.dart';
 import 'package:gracery/providers/product_provider.dart';
-import 'package:gracery/providers/wishlist_provider.dart';
 import 'package:gracery/widget/heart_btn.dart';
 import 'package:gracery/widget/text_widget.dart';
 import 'package:provider/provider.dart';
+import '../../providers/cart_provider.dart';
+import '../../providers/wishlist_provider.dart';
 import '../../services/utils.dart';
 
 class CartWidget extends StatefulWidget {
@@ -39,13 +39,13 @@ class _CartWidgetState extends State<CartWidget> {
     Size size = Utils(context).getScreenSize;
     final productProvider = Provider.of<ProductsProvider>(context);
     final cartModel = Provider.of<CartModel>(context);
-    final wishlistProvider = Provider.of<WishlistProvider>(context);
     final getCurrProduct = productProvider.findProdById(cartModel.productId);
-    final usedPrice = getCurrProduct.isOnSale
+    double usedPrice = getCurrProduct.isOnSale
         ? getCurrProduct.salePrice
         : getCurrProduct.price;
     final cartProvider = Provider.of<CartProvider>(context);
-    bool? isInWishlist =
+    final wishlistProvider = Provider.of<WishlistProvider>(context);
+    bool? _isInWishlist =
         wishlistProvider.getWishlistItems.containsKey(getCurrProduct.id);
     return GestureDetector(
       onTap: () {
@@ -162,8 +162,12 @@ class _CartWidgetState extends State<CartWidget> {
                       child: Column(
                         children: [
                           InkWell(
-                            onTap: () {
-                              cartProvider.removeOneItem(cartModel.productId);
+                            onTap: () async {
+                              await cartProvider.removeOneItem(
+                                cartId: cartModel.id,
+                                productId: cartModel.productId,
+                                quantity: cartModel.quantity,
+                              );
                             },
                             child: const Icon(
                               CupertinoIcons.cart_badge_minus,
@@ -176,10 +180,11 @@ class _CartWidgetState extends State<CartWidget> {
                           ),
                           HeartBTN(
                             productId: getCurrProduct.id,
-                            isInWishlist: isInWishlist,
+                            isInWishlist: _isInWishlist,
                           ),
                           TextWidget(
-                            text: '\$${usedPrice.toStringAsFixed(2)}',
+                            text:
+                                '\$${(usedPrice * int.parse(_quantityTextController.text)).toStringAsFixed(2)}',
                             color: color,
                             textSize: 18,
                             maxLines: 1,

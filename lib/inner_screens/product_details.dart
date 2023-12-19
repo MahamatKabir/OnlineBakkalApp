@@ -286,7 +286,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             color: Colors.green,
                             borderRadius: BorderRadius.circular(10),
                             child: InkWell(
-                              onTap: () {
+                              onTap: () async {
                                 if (isInCart) {
                                   return;
                                 }
@@ -298,10 +298,16 @@ class _ProductDetailsState extends State<ProductDetails> {
                                       context: context);
                                   return;
                                 }
-                                cartProvider.addProductsToCart(
+                                await GlobalMethods.addToCart(
                                     productId: getCurrProduct.id,
-                                    quantity: int.parse(
-                                        _quantityTextController.text));
+                                    quantity:
+                                        int.parse(_quantityTextController.text),
+                                    context: context);
+                                await cartProvider.fetchCart();
+                                // cartProvider.addProductsToCart(
+                                //     productId: getCurrProduct.id,
+                                //     quantity: int.parse(
+                                //         _quantityTextController.text));
                               },
                               borderRadius: BorderRadius.circular(10),
                               child: Padding(

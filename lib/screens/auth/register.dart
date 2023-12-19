@@ -1,7 +1,9 @@
 import 'package:card_swiper/card_swiper.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:gracery/fetch_screen.dart';
 import 'package:gracery/screens/auth/login.dart';
 import 'package:gracery/screens/btm_bar.dart';
 import 'package:gracery/screens/loading_manager.dart';
@@ -49,18 +51,31 @@ class _RegisterScreenState extends State<RegisterScreen> {
   void _submitFormOnRegister() async {
     final isValid = _formKey.currentState!.validate();
     FocusScope.of(context).unfocus();
-    setState(() {
-      _isLoading = true;
-    });
     if (isValid) {
       _formKey.currentState!.save();
-
+      setState(() {
+        _isLoading = true;
+      });
       try {
         await authInstance.createUserWithEmailAndPassword(
             email: _emailTextController.text.toLowerCase().trim(),
             password: _passTextController.text.trim());
-        Navigator.of(context).pushReplacement(
-            MaterialPageRoute(builder: (context) => const BottomBarScreen()));
+        final User? user = authInstance.currentUser;
+        final uid = user!.uid;
+        user.updateDisplayName(_fullNameController.text);
+        user.reload();
+        await FirebaseFirestore.instance.collection('users').doc(uid).set({
+          'id': uid,
+          'name': _fullNameController.text,
+          'email': _emailTextController.text.toLowerCase(),
+          'shipping-address': _addressTextController.text,
+          'userWish': [],
+          'userCart': [],
+          'createdAt': Timestamp.now(),
+        });
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (context) => const FetchScreen(),
+        ));
         print('Succefully registered');
       } on FirebaseException catch (error) {
         GlobalMethods.errorDialog(
@@ -319,14 +334,12 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                     ),
                   ),
-                  _isLoading
-                      ? const CircularProgressIndicator()
-                      : AuthButton(
-                          buttonText: 'Sign up',
-                          fct: () {
-                            _submitFormOnRegister();
-                          },
-                        ),
+                  AuthButton(
+                    buttonText: 'Sign up',
+                    fct: () {
+                      _submitFormOnRegister();
+                    },
+                  ),
                   const SizedBox(
                     height: 10,
                   ),

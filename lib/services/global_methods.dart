@@ -1,5 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:gracery/consts/firebase_consts.dart';
 import 'package:gracery/widget/text_widget.dart';
+import 'package:uuid/uuid.dart';
 
 class GlobalMethods {
   static navigateTo({required BuildContext ctx, required String routeName}) {
@@ -78,7 +83,7 @@ class GlobalMethods {
               const SizedBox(
                 width: 8,
               ),
-              const Text('An error '),
+              const Text('An Error occured'),
             ]),
             content: Text(subtitle),
             actions: [
@@ -90,12 +95,63 @@ class GlobalMethods {
                 },
                 child: TextWidget(
                   color: Colors.cyan,
-                  text: 'ok',
+                  text: 'Ok',
                   textSize: 18,
                 ),
               ),
             ],
           );
         });
+  }
+
+  static Future<void> addToCart(
+      {required String productId,
+      required int quantity,
+      required BuildContext context}) async {
+    final User? user = authInstance.currentUser;
+    final _uid = user!.uid;
+    final cartId = const Uuid().v4();
+    try {
+      FirebaseFirestore.instance.collection('users').doc(_uid).update({
+        'userCart': FieldValue.arrayUnion([
+          {
+            'cartId': cartId,
+            'productId': productId,
+            'quantity': quantity,
+          }
+        ])
+      });
+      await Fluttertoast.showToast(
+        msg: "Item has been added to your cart",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
+    } catch (error) {
+      errorDialog(subtitle: error.toString(), context: context);
+    }
+  }
+
+  static Future<void> addToWishlist(
+      {required String productId, required BuildContext context}) async {
+    final User? user = authInstance.currentUser;
+    final uid = user!.uid;
+    final wishlistId = const Uuid().v4();
+    try {
+      FirebaseFirestore.instance.collection('users').doc(uid).update({
+        'userWish': FieldValue.arrayUnion([
+          {
+            'wishlistId': wishlistId,
+            'productId': productId,
+          }
+        ])
+      });
+      await Fluttertoast.showToast(
+        msg: "Item has been added to your wishlist",
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.CENTER,
+      );
+    } catch (error) {
+      errorDialog(subtitle: error.toString(), context: context);
+    }
   }
 }

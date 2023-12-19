@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
     Size size = utils.getScreenSize;
     final productsProviders = Provider.of<ProductsProvider>(context);
     List<ProductModel> allProducts = productsProviders.getProducts;
-    List<ProductModel> productsOnSale = productsProviders.getOnSaleProduct;
+    List<ProductModel> productsOnSale = productsProviders.getOnSaleProducts;
     return Scaffold(
       body: SingleChildScrollView(
         child: Column(

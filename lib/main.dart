@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:gracery/fetch_screen.dart';
 import 'package:gracery/inner_screens/cat_screen.dart';
 import 'package:gracery/inner_screens/on_sale_screen.dart';
 import 'package:gracery/provider/dark_theme_provider.dart';
 import 'package:gracery/providers/cart_provider.dart';
+import 'package:gracery/providers/orders_provider.dart';
 import 'package:gracery/providers/product_provider.dart';
 import 'package:gracery/providers/viewed_prod_provider.dart';
 import 'package:gracery/providers/wishlist_provider.dart';
@@ -47,26 +49,6 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    //return FutureBuilder(
-    // future: Firebase.initializeApp(),
-    // builder: (context, snapshot) {
-    // if (snapshot.connectionState == ConnectionState.waiting) {
-    // return const MaterialApp(
-    // home: Scaffold(
-    // body: Center(
-    //  child: CircularProgressIndicator(),
-    //),
-    // ),
-    // );
-    //} else if (snapshot.hasError) {
-    //const MaterialApp(
-    //  home: Scaffold(
-    //   body: Center(
-    // child: CircularProgressIndicator(),
-    //  ),
-    // ),
-    // );
-    // }
     return MultiProvider(
       providers: [
         ChangeNotifierProvider(create: (_) {
@@ -76,6 +58,7 @@ class _MyAppState extends State<MyApp> {
         ChangeNotifierProvider(create: (_) => CartProvider()),
         ChangeNotifierProvider(create: (_) => WishlistProvider()),
         ChangeNotifierProvider(create: (_) => ViewedProdProvider()),
+        ChangeNotifierProvider(create: (_) => OrdersProvider()),
       ],
       child:
           Consumer<DarkThemeProvider>(builder: (context, themeProvider, child) {
@@ -83,7 +66,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             theme: Styles.themeData(themeProvider.getDarkTheme, context),
-            home: const LoginScreen(),
+            home: const FetchScreen(),
             routes: {
               OnSaleScreen.routeName: (ctx) => const OnSaleScreen(),
               FeedsScreen.routeName: (ctx) => const FeedsScreen(),
@@ -100,6 +83,5 @@ class _MyAppState extends State<MyApp> {
             });
       }),
     );
-    // });
   }
 }
