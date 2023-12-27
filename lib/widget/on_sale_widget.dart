@@ -6,6 +6,7 @@ import 'package:gracery/consts/firebase_consts.dart';
 import 'package:gracery/inner_screens/product_details.dart';
 import 'package:gracery/models/product_model.dart';
 import 'package:gracery/providers/cart_provider.dart';
+import 'package:gracery/providers/viewed_prod_provider.dart';
 import 'package:gracery/providers/wishlist_provider.dart';
 import 'package:gracery/services/global_methods.dart';
 import 'package:gracery/services/utils.dart';
@@ -33,24 +34,27 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
     final wishlistProvider = Provider.of<WishlistProvider>(context);
     bool? isInWishlist =
         wishlistProvider.getWishlistItems.containsKey(productModel.id);
+    //final viewedProdProvider = Provider.of<ViewedProdProvider>(context);
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.all(2.0),
       child: Material(
         color: Theme.of(context).cardColor.withOpacity(0.9),
         borderRadius: BorderRadius.circular(12),
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(10),
           onTap: () {
+            // viewedProdProvider.addProductToHistory(productId: productModel.id);
             Navigator.pushNamed(context, ProductDetails.routeName,
                 arguments: productModel.id);
             //GlobalMethods.navigateTo(
             // ctx: context, routeName: ProductDetails.routeName);
           },
           child: Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(1.0),
             child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 // mainAxisAlignment: MainAxisAlignment.start,
+
                 children: [
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -122,7 +126,7 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
                     textSize: 16,
                     isTitle: true,
                   ),
-                  const SizedBox(height: 5),
+                  //const SizedBox(height: 5),
                 ]),
           ),
         ),

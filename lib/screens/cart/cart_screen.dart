@@ -1,7 +1,11 @@
+import 'dart:convert';
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gracery/consts/firebase_consts.dart';
 import 'package:gracery/providers/orders_provider.dart';
@@ -14,6 +18,7 @@ import 'package:uuid/uuid.dart';
 import '../../providers/cart_provider.dart';
 import '../../services/global_methods.dart';
 import '../../services/utils.dart';
+import 'package:http/http.dart ' as http;
 
 class CartScreen extends StatelessWidget {
   const CartScreen({Key? key}) : super(key: key);
@@ -109,20 +114,29 @@ class CartScreen extends StatelessWidget {
               borderRadius: BorderRadius.circular(10),
               onTap: () async {
                 User? user = authInstance.currentUser;
-                final orderId = const Uuid().v4();
+
                 final productProvider =
                     Provider.of<ProductsProvider>(ctx, listen: false);
+                try {
+                  await initPayment(
+                      email: user!.email ?? '',
+                      amount: total * 100,
+                      context: ctx);
+                } catch (error) {
+                  return;
+                }
                 cartProvider.getCartItems.forEach((key, value) async {
                   final getCurrProduct = productProvider.findProdById(
                     value.productId,
                   );
                   try {
+                    final orderId = const Uuid().v4();
                     await FirebaseFirestore.instance
                         .collection('orders')
                         .doc(orderId)
                         .set({
                       'orderId': orderId,
-                      'userId': user!.uid,
+                      'userId': user.uid,
                       'productId': value.productId,
                       'price': (getCurrProduct.isOnSale
                               ? getCurrProduct.salePrice
@@ -170,5 +184,59 @@ class CartScreen extends StatelessWidget {
         ]),
       ),
     );
+  }
+
+  Future<void> initPayment(
+      {required String email,
+      required double amount,
+      required BuildContext context}) async {
+    try {
+      // 1. Create a payment intent on the server
+      final response = await http.post(
+          Uri.parse(
+              'https://us-central1-gracery-app.cloudfunctions.net/stripePaymentIntentRequest'),
+          body: {
+            'email': email,
+            'amount': amount.toString(),
+          });
+
+      final jsonResponse = jsonDecode(response.body);
+      log(jsonResponse.toString());
+      if (jsonResponse['success'] == false) {
+        GlobalMethods.errorDialog(
+            subtitle: jsonResponse['error'], context: context);
+        throw jsonResponse['error'];
+      }
+      // 2. Initialize the payment sheet
+      await Stripe.instance.initPaymentSheet(
+          paymentSheetParameters: SetupPaymentSheetParameters(
+        paymentIntentClientSecret: jsonResponse['paymentIntent'],
+        merchantDisplayName: 'Grocery Flutter course',
+        customerId: jsonResponse['customer'],
+        customerEphemeralKeySecret: jsonResponse['ephemeralKey'],
+//         // testEnv: true,
+//         // merchantCountryCode: 'SG',
+      ));
+      await Stripe.instance.presentPaymentSheet();
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Payment is successful'),
+        ),
+      );
+    } catch (errorr) {
+      if (errorr is StripeException) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occured ${errorr.error.localizedMessage}'),
+          ),
+        );
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('An error occured $errorr'),
+          ),
+        );
+      }
+    }
   }
 }

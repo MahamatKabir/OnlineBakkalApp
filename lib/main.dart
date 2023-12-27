@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_stripe/flutter_stripe.dart';
 import 'package:gracery/fetch_screen.dart';
 import 'package:gracery/inner_screens/cat_screen.dart';
 import 'package:gracery/inner_screens/on_sale_screen.dart';
@@ -10,6 +11,7 @@ import 'package:gracery/providers/product_provider.dart';
 import 'package:gracery/providers/viewed_prod_provider.dart';
 import 'package:gracery/providers/wishlist_provider.dart';
 import 'package:gracery/screens/viewed_recently/viewed_recently.dart';
+import 'package:gracery/splashscreen.dart';
 import 'package:provider/provider.dart';
 import 'consts/theme_data.dart';
 import 'inner_screens/feeds_screen.dart';
@@ -23,6 +25,9 @@ import 'screens/wishlist/wishlist_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Stripe.publishableKey =
+      "pk_test_51ORGB2JAWhKQ0711TWLExhhqNvm0HzsoOIuzjIqhhfWBbAfWA51jhbpLMHVNHLJogqH6JNhXTnxBQlB2nWyCDObx00Ljwpjahe";
+  Stripe.instance.applySettings();
   runApp(const MyApp());
 }
 
@@ -66,7 +71,7 @@ class _MyAppState extends State<MyApp> {
             debugShowCheckedModeBanner: false,
             title: 'Flutter Demo',
             theme: Styles.themeData(themeProvider.getDarkTheme, context),
-            home: const FetchScreen(),
+            home: FetchScreen(),
             routes: {
               OnSaleScreen.routeName: (ctx) => const OnSaleScreen(),
               FeedsScreen.routeName: (ctx) => const FeedsScreen(),

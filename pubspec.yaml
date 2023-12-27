@@ -31,9 +31,19 @@ dependencies:
   flutter_spinkit: ^5.2.0
   fluttertoast: ^8.2.4
   uuid: ^4.2.1
+  flutter_stripe: ^10.0.0
+  http: ^1.1.2
   
 
 dev_dependencies:
+  flutter_launcher_icons: "^0.13.1"
+
+
+flutter_launcher_icons:
+  android: "launcher_icon"
+  ios: true
+  image_path: "assets/images/grocery.png"
+  
   flutter_test:
     sdk: flutter
 
@@ -66,6 +76,8 @@ flutter:
      - assets/images/cat/spices.png
      - assets/images/cat/grains.png
      - assets/images/landing/buyfood.jpg
+     - assets/images/logo.png
+     - assets/images/grocery.png
       
      
      

@@ -6,6 +6,7 @@ import 'package:gracery/consts/firebase_consts.dart';
 import 'package:gracery/inner_screens/product_details.dart';
 import 'package:gracery/models/product_model.dart';
 import 'package:gracery/providers/cart_provider.dart';
+import 'package:gracery/providers/viewed_prod_provider.dart';
 import 'package:gracery/providers/wishlist_provider.dart';
 import 'package:gracery/services/global_methods.dart';
 import 'package:gracery/widget/price_widget.dart';
@@ -47,13 +48,19 @@ class _FeedsWidgetState extends State<FeedsWidget> {
     final wishlistProvider = Provider.of<WishlistProvider>(context);
     bool? isInWishlist =
         wishlistProvider.getWishlistItems.containsKey(productModel.id);
+    //final viewedProdProvider = Provider.of<ViewedProdProvider>(context);
     return Padding(
-      padding: const EdgeInsets.all(8.0),
+      padding: const EdgeInsets.only(
+        top: 1,
+        right: 10,
+        left: 10,
+      ),
       child: Material(
         borderRadius: BorderRadius.circular(12),
         color: Theme.of(context).cardColor,
         child: InkWell(
           onTap: () {
+            // viewedProdProvider.addProductToHistory(productId: productModel.id);
             Navigator.pushNamed(context, ProductDetails.routeName,
                 arguments: productModel.id);
             //GlobalMethods.navigateTo(
@@ -68,7 +75,7 @@ class _FeedsWidgetState extends State<FeedsWidget> {
               boxFit: BoxFit.fill,
             ),
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 10),
+              padding: const EdgeInsets.symmetric(horizontal: 8),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -91,8 +98,8 @@ class _FeedsWidgetState extends State<FeedsWidget> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
+            SizedBox(
+              height: 18,
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -109,7 +116,7 @@ class _FeedsWidgetState extends State<FeedsWidget> {
                     child: Row(
                       children: [
                         Flexible(
-                          flex: 6,
+                          flex: 5,
                           child: FittedBox(
                             child: TextWidget(
                               text: productModel.isPiece ? 'Piece' : 'KG',

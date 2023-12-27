@@ -77,7 +77,7 @@ class _ProductDetailsState extends State<ProductDetails> {
               imageUrl: getCurrProduct.imageUrl,
               boxFit: BoxFit.scaleDown,
               width: size.width,
-              // height: screenHeight * .4,
+              //height: size.height * 0.8,
             ),
           ),
           Flexible(
@@ -116,7 +116,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsets.only(top: 20, left: 30, right: 30),
+                        const EdgeInsets.only(top: 10, left: 30, right: 30),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,

@@ -103,7 +103,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
                 Flexible(
                   child: SizedBox(
-                    height: size.height * 0.24,
+                    height: size.height * 0.30,
                     child: ListView.builder(
                         itemCount: productsOnSale.length < 10
                             ? productsOnSale.length
@@ -154,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisCount: 2,
               padding: EdgeInsets.zero,
               // crossAxisSpacing: 10,
-              childAspectRatio: size.width / (size.height * 0.7),
+              childAspectRatio: size.width / (size.height * 0.6),
               children: List.generate(
                   allProducts.length < 4 ? allProducts.length : 4, (index) {
                 return ChangeNotifierProvider.value(
