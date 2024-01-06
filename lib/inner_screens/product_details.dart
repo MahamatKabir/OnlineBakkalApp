@@ -9,6 +9,7 @@ import 'package:gracery/providers/cart_provider.dart';
 import 'package:gracery/providers/product_provider.dart';
 import 'package:gracery/providers/viewed_prod_provider.dart';
 import 'package:gracery/providers/wishlist_provider.dart';
+import 'package:gracery/screens/btm_bar.dart';
 import 'package:gracery/services/global_methods.dart';
 import 'package:gracery/widget/heart_btn.dart';
 import 'package:gracery/widget/text_widget.dart';
@@ -116,7 +117,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                   ),
                   Padding(
                     padding:
-                        const EdgeInsets.only(top: 10, left: 30, right: 30),
+                        const EdgeInsets.only(top: 10, left: 30, right: 24),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.start,
                       crossAxisAlignment: CrossAxisAlignment.center,
@@ -128,13 +129,13 @@ class _ProductDetailsState extends State<ProductDetails> {
                           isTitle: true,
                         ),
                         TextWidget(
-                          text: getCurrProduct.isPiece ? 'Piece' : '/Kg',
-                          color: color,
+                          text: getCurrProduct.isPiece ? 'Piece' : 'Kg',
+                          color: Color.fromARGB(255, 159, 66, 66),
                           textSize: 12,
                           isTitle: false,
                         ),
                         const SizedBox(
-                          width: 10,
+                          width: 3,
                         ),
                         Visibility(
                           visible: getCurrProduct.isOnSale ? true : false,
@@ -142,7 +143,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                             '\$${getCurrProduct.price.toStringAsFixed(2)}',
                             style: TextStyle(
                                 fontSize: 15,
-                                color: color,
+                                color: Color.fromARGB(255, 159, 66, 66),
                                 decoration: TextDecoration.lineThrough),
                           ),
                         ),

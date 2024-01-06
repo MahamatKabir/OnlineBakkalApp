@@ -22,6 +22,7 @@ class TextWidget extends StatelessWidget {
       style: TextStyle(
           overflow: TextOverflow.ellipsis,
           color: color,
+          fontFamily: 'Varela',
           fontSize: textSize,
           fontWeight: isTitle ? FontWeight.bold : FontWeight.normal),
     );

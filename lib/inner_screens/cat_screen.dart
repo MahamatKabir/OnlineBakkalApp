@@ -70,12 +70,14 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(
-                              color: Colors.greenAccent, width: 1),
+                              color: Color.fromARGB(255, 159, 66, 66),
+                              width: 1),
                         ),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: const BorderSide(
-                              color: Colors.greenAccent, width: 1),
+                              color: Color.fromARGB(255, 159, 66, 66),
+                              width: 1),
                         ),
                         hintText: "What's in your mind",
                         prefixIcon: const Icon(Icons.search),
@@ -87,7 +89,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                           icon: Icon(
                             Icons.close,
                             color: _searchTextFocusNode.hasFocus
-                                ? Colors.red
+                                ? Color.fromARGB(255, 159, 66, 66)
                                 : color,
                           ),
                         ),
@@ -105,7 +107,7 @@ class _CategoryScreenState extends State<CategoryScreen> {
                         crossAxisCount: 2,
                         padding: EdgeInsets.zero,
                         // crossAxisSpacing: 10,
-                        childAspectRatio: size.width / (size.height * 0.59),
+                        childAspectRatio: size.width / (size.height * 0.85),
                         children: List.generate(
                             _searchTextController.text.isNotEmpty
                                 ? listProdcutSearch.length

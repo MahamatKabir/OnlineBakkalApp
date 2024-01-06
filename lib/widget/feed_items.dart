@@ -50,11 +50,7 @@ class _FeedsWidgetState extends State<FeedsWidget> {
         wishlistProvider.getWishlistItems.containsKey(productModel.id);
     //final viewedProdProvider = Provider.of<ViewedProdProvider>(context);
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 1,
-        right: 10,
-        left: 10,
-      ),
+      padding: EdgeInsets.only(top: 5.0, bottom: 2.0, left: 5.0, right: 5.0),
       child: Material(
         borderRadius: BorderRadius.circular(12),
         color: Theme.of(context).cardColor,
@@ -67,150 +63,178 @@ class _FeedsWidgetState extends State<FeedsWidget> {
             // ctx: context, routeName: ProductDetails.routeName);
           },
           borderRadius: BorderRadius.circular(12),
-          child: Column(children: [
-            FancyShimmerImage(
-              imageUrl: productModel.imageUrl,
-              height: size.width * 0.21,
-              width: size.width * 0.2,
-              boxFit: BoxFit.fill,
-            ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 8),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    flex: 3,
-                    child: TextWidget(
-                      text: productModel.title,
-                      maxLines: 1,
-                      color: color,
-                      textSize: 20,
-                      isTitle: true,
-                    ),
-                  ),
-                  Flexible(
-                      flex: 1,
-                      child: HeartBTN(
-                        productId: productModel.id,
-                        isInWishlist: isInWishlist,
-                      )),
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(15.0),
+                boxShadow: [
+                  BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 3.0,
+                      blurRadius: 5.0)
                 ],
+                color: Colors.white),
+            child: Column(children: [
+              FancyShimmerImage(
+                imageUrl: productModel.imageUrl,
+                height: size.width * 0.34,
+                width: size.width * 0.3,
+                boxFit: BoxFit.fill,
               ),
-            ),
-            SizedBox(
-              height: 18,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Flexible(
-                    flex: 3,
-                    child: PriceWidget(
-                      salePrice: productModel.salePrice,
-                      price: productModel.price,
-                      textPrice: _quantityTextController.text,
-                      isOnSale: productModel.isOnSale,
-                    ),
-                  ),
-                  Flexible(
-                    child: Row(
-                      children: [
-                        Flexible(
-                          flex: 5,
-                          child: FittedBox(
-                            child: TextWidget(
-                              text: productModel.isPiece ? 'Piece' : 'KG',
-                              color: color,
-                              textSize: 20,
-                              isTitle: true,
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        Flexible(
-                            child: TextFormField(
-                          controller: _quantityTextController,
-                          key: const ValueKey('10 \$'),
-                          style: TextStyle(color: color, fontSize: 18),
-                          keyboardType: TextInputType.number,
-                          maxLines: 1,
-                          decoration: const InputDecoration(
-                            focusedBorder: UnderlineInputBorder(
-                              borderSide: BorderSide(),
-                            ),
-                          ),
-                          enabled: true,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.allow(
-                                RegExp('[0-9.,]')),
-                          ],
-                          onChanged: (value) {
-                            setState(() {
-                              if (value.isEmpty) {
-                                _quantityTextController.text = '1';
-                              } else {
-                                // total = usedPrice *
-                                //     int.parse(_quantityTextController.text);
-                              }
-                            });
-                          },
-                          onSaved: (value) {},
-                        ))
-                      ],
-                    ),
-                  )
-                ],
-              ),
-            ),
-            const Spacer(),
-            SizedBox(
-              //width: double.infinity,
-              child: TextButton(
-                onPressed: isInCart
-                    ? null
-                    : () async {
-                        //if (isInCart) {
-                        //return;
-                        //}
-                        final User? user = authInstance.currentUser;
-                        if (user == null) {
-                          GlobalMethods.errorDialog(
-                              subtitle: 'No user found , Pleae login first',
-                              context: context);
-                          return;
-                        }
-                        await GlobalMethods.addToCart(
-                            productId: productModel.id,
-                            quantity: int.parse(_quantityTextController.text),
-                            context: context);
-                        await cartProvider.fetchCart();
-                        // cartProvider.addProductsToCart(
-                        //     productId: productModel.id,
-                        //     quantity: int.parse(_quantityTextController.text));
-                      },
-                style: ButtonStyle(
-                    backgroundColor:
-                        MaterialStateProperty.all(Theme.of(context).cardColor),
-                    tapTargetSize: MaterialTapTargetSize.shrinkWrap,
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      const RoundedRectangleBorder(
-                        borderRadius: BorderRadius.only(
-                          bottomLeft: Radius.circular(12.0),
-                          bottomRight: Radius.circular(12.0),
-                        ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 3,
+                      child: TextWidget(
+                        text: productModel.title,
+                        maxLines: 1,
+                        color: color,
+                        textSize: 20,
+                        isTitle: true,
                       ),
-                    )),
-                child: TextWidget(
-                  text: isInCart ? 'in Cart' : 'Add to cart',
-                  maxLines: 1,
-                  color: color,
-                  textSize: 20,
+                    ),
+                    Flexible(
+                        flex: 1,
+                        child: HeartBTN(
+                          productId: productModel.id,
+                          isInWishlist: isInWishlist,
+                        )),
+                  ],
                 ),
               ),
-            )
-          ]),
+              SizedBox(
+                height: 15,
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      flex: 3,
+                      child: PriceWidget(
+                        salePrice: productModel.salePrice,
+                        price: productModel.price,
+                        textPrice: _quantityTextController.text,
+                        isOnSale: productModel.isOnSale,
+                      ),
+                    ),
+                    Flexible(
+                      child: Row(
+                        children: [
+                          Flexible(
+                            flex: 5,
+                            child: FittedBox(
+                              child: TextWidget(
+                                text: productModel.isPiece ? 'Piece' : 'KG',
+                                color: color,
+                                textSize: 20,
+                                isTitle: true,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          Flexible(
+                              child: TextFormField(
+                            controller: _quantityTextController,
+                            key: const ValueKey('10 \$'),
+                            style: TextStyle(color: color, fontSize: 18),
+                            keyboardType: TextInputType.number,
+                            maxLines: 1,
+                            decoration: const InputDecoration(
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(),
+                              ),
+                            ),
+                            enabled: true,
+                            inputFormatters: [
+                              FilteringTextInputFormatter.allow(
+                                  RegExp('[0-9.,]')),
+                            ],
+                            onChanged: (value) {
+                              setState(() {
+                                if (value.isEmpty) {
+                                  _quantityTextController.text = '1';
+                                } else {
+                                  // total = usedPrice *
+                                  //     int.parse(_quantityTextController.text);
+                                }
+                              });
+                            },
+                            onSaved: (value) {},
+                          ))
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ),
+              SizedBox(
+                height: 15,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20.0),
+                    boxShadow: [
+                      BoxShadow(
+                          color: Colors.grey.withOpacity(0.5),
+                          spreadRadius: 3.0,
+                          blurRadius: 5.0)
+                    ],
+                    color: Color.fromARGB(255, 159, 66, 66)),
+                child: SizedBox(
+                  //width: double.infinity,
+
+                  child: TextButton(
+                    onPressed: isInCart
+                        ? null
+                        : () async {
+                            //if (isInCart) {
+                            //return;
+                            //}
+                            final User? user = authInstance.currentUser;
+                            if (user == null) {
+                              GlobalMethods.errorDialog(
+                                  subtitle: 'No user found , Pleae login first',
+                                  context: context);
+                              return;
+                            }
+                            await GlobalMethods.addToCart(
+                                productId: productModel.id,
+                                quantity:
+                                    int.parse(_quantityTextController.text),
+                                context: context);
+                            await cartProvider.fetchCart();
+                            // cartProvider.addProductsToCart(
+                            //     productId: productModel.id,
+                            //     quantity: int.parse(_quantityTextController.text));
+                          },
+                    style: ButtonStyle(
+                        backgroundColor: MaterialStateProperty.all(
+                            Theme.of(context).cardColor),
+                        tapTargetSize: MaterialTapTargetSize.shrinkWrap,
+                        shape:
+                            MaterialStateProperty.all<RoundedRectangleBorder>(
+                          const RoundedRectangleBorder(
+                            borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(10.0),
+                                bottomRight: Radius.circular(40.0),
+                                topLeft: Radius.circular(90),
+                                topRight: Radius.circular(10)),
+                          ),
+                        )),
+                    child: TextWidget(
+                      text: isInCart ? 'in Cart' : 'Add to cart',
+                      maxLines: 1,
+                      color: Color.fromARGB(255, 159, 66, 66),
+                      textSize: 20,
+                    ),
+                  ),
+                ),
+              )
+            ]),
+          ),
         ),
       ),
     );

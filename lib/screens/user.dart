@@ -89,33 +89,34 @@ class _UserScreenState extends State<UserScreen> {
           child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 const SizedBox(
                   height: 15,
                 ),
-                RichText(
-                  text: TextSpan(
-                    text: 'Hi,  ',
-                    style: const TextStyle(
-                      color: Colors.cyan,
-                      fontSize: 27,
-                      fontWeight: FontWeight.bold,
+                Center(
+                  child: RichText(
+                    text: TextSpan(
+                      text: 'Hi,  ',
+                      style: const TextStyle(
+                        color: Colors.cyan,
+                        fontSize: 27,
+                        fontWeight: FontWeight.bold,
+                      ),
+                      children: <TextSpan>[
+                        TextSpan(
+                            text: _name ?? 'user',
+                            style: TextStyle(
+                              color: color,
+                              fontSize: 25,
+                              fontWeight: FontWeight.w600,
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                print('My name is pressed');
+                              }),
+                      ],
                     ),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: _name ?? 'user',
-                          style: TextStyle(
-                            color: color,
-                            fontSize: 25,
-                            fontWeight: FontWeight.w600,
-                          ),
-                          recognizer: TapGestureRecognizer()
-                            ..onTap = () {
-                              print('My name is pressed');
-                            }),
-                    ],
                   ),
                 ),
                 const SizedBox(
@@ -134,7 +135,7 @@ class _UserScreenState extends State<UserScreen> {
                   thickness: 2,
                 ),
                 const SizedBox(
-                  height: 20,
+                  height: 10,
                 ),
                 _listTiles(
                   title: 'Address 2',
@@ -287,23 +288,27 @@ class _UserScreenState extends State<UserScreen> {
     required Function onPressed,
     required Color color,
   }) {
-    return ListTile(
-      title: TextWidget(
-        text: title,
-        color: color,
-        textSize: 22,
-        // isTitle: true,
+    return Padding(
+      padding: const EdgeInsets.all(1.0),
+      child: ListTile(
+        iconColor: Colors.red,
+        title: TextWidget(
+          text: title,
+          color: color,
+          textSize: 22,
+          // isTitle: true,
+        ),
+        subtitle: TextWidget(
+          text: subtitle ?? "",
+          color: color,
+          textSize: 18,
+        ),
+        leading: Icon(icon),
+        trailing: const Icon(IconlyLight.arrowRight2),
+        onTap: () {
+          onPressed();
+        },
       ),
-      subtitle: TextWidget(
-        text: subtitle ?? "",
-        color: color,
-        textSize: 18,
-      ),
-      leading: Icon(icon),
-      trailing: const Icon(IconlyLight.arrowRight2),
-      onTap: () {
-        onPressed();
-      },
     );
   }
 

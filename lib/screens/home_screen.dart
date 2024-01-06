@@ -69,7 +69,7 @@ class _HomeScreenState extends State<HomeScreen> {
               child: TextWidget(
                 text: 'View all',
                 maxLines: 1,
-                color: Colors.blue,
+                color: Color.fromARGB(255, 159, 66, 66),
                 textSize: 20,
               ),
             ),
@@ -141,7 +141,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: TextWidget(
                       text: 'Browse all',
                       maxLines: 1,
-                      color: Colors.blue,
+                      color: Color.fromARGB(255, 159, 66, 66),
                       textSize: 20,
                     ),
                   ),
@@ -154,7 +154,7 @@ class _HomeScreenState extends State<HomeScreen> {
               crossAxisCount: 2,
               padding: EdgeInsets.zero,
               // crossAxisSpacing: 10,
-              childAspectRatio: size.width / (size.height * 0.6),
+              childAspectRatio: size.width / (size.height * 0.85),
               children: List.generate(
                   allProducts.length < 4 ? allProducts.length : 4, (index) {
                 return ChangeNotifierProvider.value(
