@@ -6,7 +6,6 @@ import 'package:gracery/consts/firebase_consts.dart';
 import 'package:gracery/inner_screens/product_details.dart';
 import 'package:gracery/models/product_model.dart';
 import 'package:gracery/providers/cart_provider.dart';
-import 'package:gracery/providers/viewed_prod_provider.dart';
 import 'package:gracery/providers/wishlist_provider.dart';
 import 'package:gracery/services/global_methods.dart';
 import 'package:gracery/services/utils.dart';
@@ -27,7 +26,6 @@ class _OnSaleWidgetState extends State<OnSaleWidget> {
   Widget build(BuildContext context) {
     final Color color = Utils(context).color;
     final productModel = Provider.of<ProductModel>(context);
-    final theme = Utils(context).getTheme;
     Size size = Utils(context).getScreenSize;
     final cartProvider = Provider.of<CartProvider>(context);
     bool? isInCart = cartProvider.getCartItems.containsKey(productModel.id);

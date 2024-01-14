@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:gracery/fetch_screen.dart';
 import 'package:gracery/screens/auth/forget_pass.dart';
 import 'package:gracery/screens/auth/register.dart';
-import 'package:gracery/screens/btm_bar.dart';
 import 'package:gracery/screens/loading_manager.dart';
 import 'package:gracery/services/global_methods.dart';
 import 'package:gracery/widget/auth_button.dart';
@@ -270,7 +269,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     fct: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (context) => const BottomBarScreen(),
+                          builder: (context) => const FetchScreen(),
                         ),
                       );
                     },

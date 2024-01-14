@@ -18,22 +18,23 @@ class ProductsProvider with ChangeNotifier {
         .get()
         .then((QuerySnapshot productSnapshot) {
       _productsList = [];
-      productSnapshot.docs.forEach((element) {
+      // _productsList.clear();
+      for (var element in productSnapshot.docs) {
         _productsList.insert(
             0,
             ProductModel(
               id: element.get('id'),
-              title: element.get('title'),
               imageUrl: element.get('imageUrl'),
-              productCategoryName: element.get('productCategoryName'),
+              isOnSale: element.get('isOnSale'),
+              isPiece: element.get('isPiece'),
               price: double.parse(
                 element.get('price'),
               ),
+              productCategoryName: element.get('productCategoryName'),
               salePrice: element.get('salePrice'),
-              isOnSale: element.get('isOnSale'),
-              isPiece: element.get('isPiece'),
+              title: element.get('title'),
             ));
-      });
+      }
     });
     notifyListeners();
   }
@@ -43,23 +44,23 @@ class ProductsProvider with ChangeNotifier {
   }
 
   List<ProductModel> findByCategory(String categoryName) {
-    List<ProductModel> _categoryList = _productsList
+    List<ProductModel> categoryList = _productsList
         .where((element) => element.productCategoryName
             .toLowerCase()
             .contains(categoryName.toLowerCase()))
         .toList();
-    return _categoryList;
+    return categoryList;
   }
 
   List<ProductModel> searchQuery(String searchText) {
-    List<ProductModel> _searchList = _productsList
+    List<ProductModel> searchList = _productsList
         .where(
           (element) => element.title.toLowerCase().contains(
                 searchText.toLowerCase(),
               ),
         )
         .toList();
-    return _searchList;
+    return searchList;
   }
 
   // static final List<ProductModel> _productsList = [

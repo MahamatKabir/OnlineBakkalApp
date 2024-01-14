@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:fancy_shimmer_image/fancy_shimmer_image.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:gracery/consts/firebase_consts.dart';
-import 'package:gracery/inner_screens/product_details.dart';
 import 'package:gracery/models/viewed_model.dart';
 import 'package:gracery/providers/product_provider.dart';
 import 'package:gracery/services/global_methods.dart';

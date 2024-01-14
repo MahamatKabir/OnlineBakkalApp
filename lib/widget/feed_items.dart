@@ -6,7 +6,6 @@ import 'package:gracery/consts/firebase_consts.dart';
 import 'package:gracery/inner_screens/product_details.dart';
 import 'package:gracery/models/product_model.dart';
 import 'package:gracery/providers/cart_provider.dart';
-import 'package:gracery/providers/viewed_prod_provider.dart';
 import 'package:gracery/providers/wishlist_provider.dart';
 import 'package:gracery/services/global_methods.dart';
 import 'package:gracery/widget/price_widget.dart';

@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_iconly/flutter_iconly.dart';
 import 'package:gracery/fetch_screen.dart';
 import 'package:gracery/screens/auth/login.dart';
-import 'package:gracery/screens/btm_bar.dart';
 import 'package:gracery/screens/loading_manager.dart';
 import 'package:gracery/widget/auth_button.dart';
 import 'package:gracery/widget/text_widget.dart';
@@ -99,7 +98,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
   @override
   Widget build(BuildContext context) {
     final theme = Utils(context).getTheme;
-    Color color = Utils(context).color;
 
     return Scaffold(
       body: LoadingManager(
