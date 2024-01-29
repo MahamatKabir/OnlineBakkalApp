@@ -4,6 +4,7 @@ import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:gracery/consts/contss.dart';
 import 'package:gracery/consts/firebase_consts.dart';
 import 'package:gracery/providers/cart_provider.dart';
+import 'package:gracery/providers/orders_provider.dart';
 import 'package:gracery/providers/product_provider.dart';
 import 'package:gracery/providers/wishlist_provider.dart';
 import 'package:gracery/screens/btm_bar.dart';
@@ -27,17 +28,18 @@ class _FetchScreenState extends State<FetchScreen> {
       final cartProvider = Provider.of<CartProvider>(context, listen: false);
       final wishlistProvider =
           Provider.of<WishlistProvider>(context, listen: false);
-      //final orderProvider = Provider.of<OrdersProvider>(context, listen: false);
+      final orderProvider = Provider.of<OrdersProvider>(context, listen: false);
       final User? user = authInstance.currentUser;
       if (user == null) {
         await productsProvider.fetchProducts();
         cartProvider.clearLocalCart();
         wishlistProvider.clearLocalWishlist();
-        //orderProvider.clearLocalOrders();
+        orderProvider.clearLocalOrders();
       } else {
         await productsProvider.fetchProducts();
         await cartProvider.fetchCart();
         await wishlistProvider.fetchWishlist();
+        await orderProvider.fetchOrders();
       }
 
       Navigator.of(context).pushReplacement(MaterialPageRoute(

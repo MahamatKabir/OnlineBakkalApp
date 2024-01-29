@@ -21,7 +21,7 @@ class OrdersProvider with ChangeNotifier {
     await FirebaseFirestore.instance
         .collection('orders')
         .where("userId", isEqualTo: uid)
-        .orderBy("OrderDate", descending: false)
+        //.orderBy("OrderDate", descending: false)
         .get()
         .then((QuerySnapshot ordersSnapshot) {
       _orders = [];
